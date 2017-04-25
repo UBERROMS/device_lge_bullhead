@@ -26,15 +26,13 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53.a57
 
+GRAPHITE_OPTS := true
+STRICT_ALIASING := true
+
 ENABLE_CPUSETS := true
 
 TARGET_NO_BOOTLOADER := true
 
-# Inline kernel building
-KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/aarch64/aarch64-linux-android-4.9/bin
-KERNEL_TOOLCHAIN_PREFIX := aarch64-linux-android-
-TARGET_KERNEL_SOURCE := kernel/lge/bullhead
-TARGET_KERNEL_CONFIG := pure_defconfig
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 
 BOARD_KERNEL_BASE        := 0x00000000
@@ -94,18 +92,8 @@ TARGET_USES_C2D_COMPOSITION := true
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 MAX_VIRTUAL_DISPLAY_DIMENSION := 2048
 
-HAVE_ADRENO_SOURCE:= false
-
-OVERRIDE_RS_DRIVER:= libRSDriver_adreno.so
-
-# Enable dex-preoptimization to speed up first boot sequence
-ifeq ($(HOST_OS),linux)
-  ifneq ($(TARGET_BUILD_VARIANT),eng)
-    ifeq ($(WITH_DEXPREOPT),)
-      WITH_DEXPREOPT := true
-    endif
-  endif
-endif
+HAVE_ADRENO_SOURCE := false
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
@@ -141,6 +129,7 @@ TARGET_USES_INTERACTION_BOOST := true
 
 TARGET_RECOVERY_UI_LIB := librecovery_ui_nanohub
 
+
 # Force camera module to be compiled only in 32-bit mode on 64-bit systems
 # Once camera module can run in the native mode of the system (either
 # 32-bit or 64-bit), the following line should be deleted
@@ -153,5 +142,10 @@ NXP_CHIP_TYPE := 2
 TARGET_PER_MGR_ENABLED := true
 
 USE_CLANG_PLATFORM_BUILD := true
+
+# Inline kernel building
+TARGET_GCC_VERSION_ARM64 := 6.x
+TARGET_KERNEL_SOURCE := kernel/lge/bullhead
+TARGET_KERNEL_CONFIG := phasma_defconfig
 
 -include vendor/lge/bullhead/BoardConfigVendor.mk
